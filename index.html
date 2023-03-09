@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="./img/icon.png" type="image/x-icon" />
+        <link rel="stylesheet" href="./css/style.css" />
+
+        <title>To Do List</title>
+    </head>
+    <body>
+        <header>
+            <h1>To Do List: V360</h>
+        </header>
+        <div class="createList">
+            <h2 class="listTitle">My lists</h2>
+            <ul class="lists">
+                <li class="listNameT">V360</li>
+                <li class="listName">Faculdade</li>
+            </ul>
+            <form action="">
+                <input type="text" class="createListInput" placeholder="Create a list" />
+                <button class="createButton" type="submit">+</button>
+            </form>
+        </div>
+
+        <div class="list">
+            <div class="listHeader">
+                <h2 class="listTitle">V360</h2>
+            </div>
+            <div class="listBody">
+                <div class="createTask">
+                    <form action="">
+                        <input 
+                        type="text"
+                        class="createTaskInput"
+                        placeholder="New task"
+                        />
+                        <button class="createButton" type="submit">+</button>
+                    </form>
+                </div>
+                <div class="tasks">
+                    <div class="task">
+                        <input 
+                            type="checkbox"
+                            id="task1"
+                        />
+                        <label for="task1">
+                        <span class="checkbox"></span>
+                            Ser aprovado no processo seletivo
+                        </label>
+                        
+                    </div>
+                    <div class="task">
+                        <input 
+                            type="checkbox"
+                            id="task2"
+                        />
+                        <label for="task2">
+                        <span class="checkbox"></span>
+                            Ser um ótimo estagiário
+                        </label>
+                        
+                    </div>
+                    <div class="destroyList">
+                      <button class="destroyButton">Delete completed tasks</button>
+                      <button class="destroyButton">Delete list</button>
+                    </div>
+                </div>
+                
+            </div>
+        
+        </div>
+        
+        <div class="footer">
+            <hr /><br />
+            <h3>Coded by Ramon Pelle</h3>
+            <section class="links">      
+                <a href="http://www.linkedin.com/in/ramon-pelle-71a86b129/.com"><img src="img/linkedin.png" height="64" width="64"></a>
+                <a href="http://www.instagram.com/_ramon.dev/"><img src="img/instagram.png" height="64" width="64"></a>
+                <a href="http://www.github.com/RamonPelle"><img src="img/github.png" height="64" width="64"></a>
+            </section>
+        </div>
+
+        <script src="./js/script.js"></script>
+    </body>
+</html>
