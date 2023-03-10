@@ -8,7 +8,7 @@
   const tasksContainer =document.querySelector('[tasksDisplay]');
   const newTaskForm = document.querySelector('[dataNewTask]');
   const newTaskInput = document.querySelector('[newTaskInputData]');
-  const deleteListButton = document.querySelector('[destroyListButton]');
+  const destroyListButton = document.querySelector('[destroyListButton]');
   const taskTemplate = document.getElementById('taskTemplate');
 
   const LOCAL_STORAGE_LIST_KEY = 'task.lists';
@@ -32,7 +32,7 @@ tasksContainer.addEventListener('click', e => {
     save()
   }
 })
-deleteListButton.addEventListener('click', e => {
+destroyListButton.addEventListener('click', e => {
   lists = lists.filter(list => list.id !== selectedListId)
   selectedListId = null
   saveAndRender()
@@ -115,7 +115,7 @@ function renderTasks(selectedList) {
     label.append(task.name)
 
     const thrashButton = document.createElement("img"); 
-    thrashButton.src = './img/delete.png'
+    thrashButton.src = './img/destroy.png'
     thrashButton.height = '20'
     thrashButton.width= '20'
     thrashButton.id = task.id
