@@ -1,75 +1,80 @@
-  //todo: funcao para apagar elemento
-  //resolver linha 88
-  const listsContainer = document.querySelector('[listsData]');
-  const newListForm = document.querySelector('[dataNewList]');
-  const newListInput = document.querySelector('[newListInputData]');
-  const listDisplayContainer = document.querySelector('[ListDisplay]');
-  const listTitleElement = document.querySelector('[listTitle]');
-  const tasksContainer =document.querySelector('[tasksDisplay]');
-  const newTaskForm = document.querySelector('[dataNewTask]');
-  const newTaskInput = document.querySelector('[newTaskInputData]');
-  const destroyListButton = document.querySelector('[destroyListButton]');
-  const taskTemplate = document.getElementById('taskTemplate');
+//Query selector config
+const listsContainer = document.querySelector('[listsData]');
+const newListForm = document.querySelector('[dataNewList]');
+const newListInput = document.querySelector('[newListInputData]');
+const listDisplayContainer = document.querySelector('[ListDisplay]');
+const listTitleElement = document.querySelector('[listTitle]');
+const tasksContainer =document.querySelector('[tasksDisplay]');
+const newTaskForm = document.querySelector('[dataNewTask]');
+const newTaskInput = document.querySelector('[newTaskInputData]');
+const destroyListButton = document.querySelector('[destroyListButton]');
+const taskTemplate = document.getElementById('taskTemplate');
 
-  const LOCAL_STORAGE_LIST_KEY = 'task.lists';
-  const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId';
-  let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
-  let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY);
-  
+// Event listeners config
+listsContainer.addEventListener('click', handleListClick);
+tasksContainer.addEventListener('click', handleTaskClick);
+destroyListButton.addEventListener('click', handleDestroyListClick);
+newListForm.addEventListener('submit', handleNewListSubmit);
+newTaskForm.addEventListener('submit', handleNewTaskSubmit);
 
-listsContainer.addEventListener('click', e => {
+// Local storage config
+const LOCAL_STORAGE_LIST_KEY = 'task.lists';
+const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId';
+
+// Variables
+let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
+let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY);
+
+
+// Functions
+function handleListClick(e) {
   if (e.target.tagName.toLowerCase() === 'li') {
-    selectedListId = e.target.dataset.listId
-    saveAndRender()
+    selectedListId = e.target.dataset.listId;
+    saveAndRender();
   }
-})
+}
 
-tasksContainer.addEventListener('click', e => {
+function handleTaskClick(e) {
   if (e.target.tagName.toLowerCase() === 'input') {
-    const selectedList = lists.find(list => list.id === selectedListId)
-    const selectedTask = selectedList.tasks.find(task => task.id === e.target.id)
-    selectedTask.complete = e.target.checked
-    save()
+    const selectedList = lists.find(list => list.id === selectedListId);
+    const selectedTask = selectedList.tasks.find(task => task.id === e.target.id);
+    selectedTask.complete = e.target.checked;
+    save();
+  } else if (e.target.classList.contains('destroyButtonTask')) {
+    const taskId = e.target.parentElement.getAttribute('for');
+    const selectedList = lists.find(list => list.id === selectedListId);
+    selectedList.tasks = selectedList.tasks.filter(task => task.id !== taskId);
+    saveAndRender();
   }
-})
-destroyListButton.addEventListener('click', e => {
-  lists = lists.filter(list => list.id !== selectedListId)
-  selectedListId = null
-  saveAndRender()
-})
+}
 
-tasksContainer.addEventListener('click', e => {
-    console.log(e.composedPath()[0])
-    if (e.target.classList.contains('destroyButtonTask')) {
-        
-      const taskId = e.target.parentElement.getAttribute('for')
-      console.log(taskId)
-      const selectedList = lists.find(list => list.id === selectedListId)
-      selectedList.tasks = selectedList.tasks.filter(task => task.id !== taskId)
-      saveAndRender()
-    }
-  })
-  
-newListForm.addEventListener('submit', e => {
-  e.preventDefault()
-  const listName = newListInput.value
-  if (listName == null || listName === '') return
-  const list = createList(listName)
-  newListInput.value = null
-  lists.push(list)
-  saveAndRender()
-})
+function handleDestroyListClick(e) {
+  lists = lists.filter(list => list.id !== selectedListId);
+  selectedListId = null;
+  saveAndRender();
+}
 
-newTaskForm.addEventListener('submit', e => {
-  e.preventDefault()
-  const taskName = newTaskInput.value
-  if (taskName == null || taskName === '') return
-  const task = createTask(taskName)
-  newTaskInput.value = null
-  const selectedList = lists.find(list => list.id === selectedListId)
-  selectedList.tasks.push(task)
-  saveAndRender()
-})
+function handleNewListSubmit(e) {
+  e.preventDefault();
+  const listName = newListInput.value;
+  if (listName == null || listName === '') return;
+  const list = createList(listName);
+  newListInput.value = null;
+  lists.push(list);
+  saveAndRender();
+}
+
+function handleNewTaskSubmit(e) {
+  e.preventDefault();
+  const taskName = newTaskInput.value;
+  if (taskName == null || taskName === '') return;
+  const task = createTask(taskName);
+  newTaskInput.value = null;
+  const selectedList = lists.find(list => list.id === selectedListId);
+  selectedList.tasks.push(task);
+  saveAndRender();
+}
+
 
 function createList(name) {
   return { id: Date.now().toString(), name: name, tasks: [] }
@@ -96,20 +101,26 @@ function render() {
   const selectedList = lists.find(list => list.id === selectedListId)
   if (selectedListId == null) {
     listDisplayContainer.style.display = 'none'
+    destroyListButton.style.display = 'none'
   } else {
     listDisplayContainer.style.display = ''
+    destroyListButton.style.display = ''
     listTitleElement.innerText = selectedList.name
     clearElement(tasksContainer)
     renderTasks(selectedList)
   }
 }
 
+
+// Render functions
 function renderTasks(selectedList) {
   selectedList.tasks.forEach(task => {
     const taskElement = document.importNode(taskTemplate.content, true)
+  
     const checkbox = taskElement.querySelector('input')
     checkbox.id = task.id
     checkbox.checked = task.complete
+
     const label = taskElement.querySelector('label')
     label.htmlFor = task.id
     label.append(task.name)
