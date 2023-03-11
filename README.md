@@ -8,4 +8,4 @@ To do list desenvolvida para a etapa do processo seletivo da empresa V360. Vaga:
 
 # Para executar
   - https://ramonpelle.github.io/todolist-js/
-  - Ou instalando todos os arquivos localmente e abrindo o arquivo "index.html" com algum navegador de sua preferência.
+  - Ou instalando todos os diretórios localmente e abrindo o arquivo "index.html" com algum navegador de sua preferência.
